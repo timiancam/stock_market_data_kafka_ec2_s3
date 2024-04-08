@@ -4,6 +4,10 @@
 
 https://python-poetry.org/docs/#installation
 
+## AWS Command Line Interfaction Installation
+
+https://aws.amazon.com/cli/
+
 ## EC2 Setup
 
 ### Zookeeper Server
@@ -59,6 +63,13 @@ https://python-poetry.org/docs/#installation
 4. `bin/kafka-console-consumer.sh --topic demo_test --bootstrap-server ec2_ublic_ipv4_address:9092`.
 5. You can now type within the producer shell and it will be outputted to the consumer shell.
 
+## S3 Setup
+
+1. Login in to AWS and select a region.
+2. [Create an S3 bucket.](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
+    * Bucket name: kafka-stock-market-demo
+    * AWS Region: _Closest to you_
+
 ## Python Setup
 
 1. create a kafka producer
@@ -78,10 +89,13 @@ https://python-poetry.org/docs/#installation
 * Repository metadata.
 * Update .toml.
 * Removal of personal pronouns and use professional language.
+* Install a local copy of the Kafka server and review the folder and files.
 
 ## Temporary Notes 1:
 
 * Video: https://www.youtube.com/watch?v=KerNf0NANMo
 * Jupyter Notebook start: 31:40
 * Stock market data simulation start: 37:40
+* S3 Bucket data upload: 45:20
+* Athena, crawler video start: 52:36
 * Current time in video: 43:22
