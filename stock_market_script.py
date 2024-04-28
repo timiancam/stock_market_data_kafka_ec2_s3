@@ -18,7 +18,7 @@ from s3fs import S3FileSystem
 # pandas read the .csv
 # create the producer server
 # create the consumer server
-# run the server for 10 seconds
+# run the servers for 10 seconds
 # producer flush the data from the kafka server
 # stop the producer and consumer server
 # Thank you for running the script
@@ -41,33 +41,26 @@ def create_consumer():
                          value_serializer=lambda x: loads(x.decode('utf-8'))
                          )
 
-def send_data(x):
-    while True:
-        print(x)
-        print('send_data')
-        x += 1
-        sleep(1)
-
-def receive_data():
-    while True:
-        print('receive_data\n')
-        sleep(1)
-
 def main():
     data = get_csv_data()
     
-    #producer = create_producer()
-    #consumer = create_consumer()
+    thread_producer = Thread(target=create_producer)
+    thread_consumer = Thread(target=create_consumer)
     
-    t1 = Thread(target=send_data(0))
-    t2 = Thread(target=receive_data())
+    thread_producer.daemon = True
+    thread_consumer.daemon = True
     
-    t1.daemon = True
-    t2.daemon = True
-    
-    t1.start()
-    t2.start()
+    thread_producer.start()
+    thread_consumer.start()
     
     sleep(RUN_TIME)
         
 main()
+
+# read the data
+# create the producer
+# create the consumer
+# for 11 seconds, the consumer needs to recieve data
+# for 10 seconds the producer needs to send data 
+    # producer.send in a while True loop
+    # for loop with consumer
