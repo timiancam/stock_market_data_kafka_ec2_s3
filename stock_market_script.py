@@ -23,9 +23,8 @@ from s3fs import S3FileSystem
 # stop the producer and consumer server
 # Thank you for running the script
 
-# unit = seconds
-RUN_TIME = 10
-BOOTSTRAP_SERVERS = ''
+RUN_TIME = 20 # Unit = seconds
+BOOTSTRAP_SERVERS = ':9092' # EC2 instance public IPv4 address
 
 def get_csv_data():
     return pd.read_csv('simulated_raw_data.csv')
@@ -41,26 +40,39 @@ def create_consumer():
                          value_serializer=lambda x: loads(x.decode('utf-8'))
                          )
 
+def send_data(producer, data):
+   # Simulates sending random data to the consumer
+   
+    while True:
+        data_entry = data.sample(1).to_dict(orient='records')[0]
+        producer.send('demo_test', value=data_entry)
+        sleep(1) # EC2 instance unable to handle data rate
+    
+def receive_data(consumer):
+    s3_address = ''
+    s3 = S3FileSystem()
+    
+    for count, i in enumerate(consumer):
+        with s3.open(s3_address.format(count), 'w') as file:
+            json.dump(i.value, file)
+
 def main():
     data = get_csv_data()
     
-    thread_producer = Thread(target=create_producer)
-    thread_consumer = Thread(target=create_consumer)
+    producer = create_producer()
+    consumer = create_consumer()
     
-    thread_producer.daemon = True
-    thread_consumer.daemon = True
+    receive_data_thread = Thread(target=receive_data,args=[consumer])
+    send_data_thread = Thread(target=send_data,args=[producer, data])
     
-    thread_producer.start()
-    thread_consumer.start()
+    receive_data_thread.daemon = True
+    send_data_thread.daemon = True
+    
+    receive_data_thread.start()
+    send_data_thread.start()
     
     sleep(RUN_TIME)
+    
+    print('Misdata managed!')
         
 main()
-
-# read the data
-# create the producer
-# create the consumer
-# for 11 seconds, the consumer needs to recieve data
-# for 10 seconds the producer needs to send data 
-    # producer.send in a while True loop
-    # for loop with consumer
