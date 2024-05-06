@@ -1,16 +1,16 @@
-# Heading
+# Stock Market Data - Kafka, EC2, S3
 
-## Poetry Installation Instructions
+## 1. Poetry Installation Instructions
 
 https://python-poetry.org/docs/#installation
 
-## AWS Command Line Interfaction Installation
+## 2. AWS Command Line Interfaction Installation
 
 https://aws.amazon.com/cli/
 
-## EC2 Setup
+## 3. EC2 Setup
 
-### Zookeeper Server
+### 3.1. Zookeeper Server
 
 1. Login in to AWS and select a region.
 2. Launch an EC2 instance.
@@ -30,7 +30,7 @@ https://aws.amazon.com/cli/
 12. `bin/zookeeper-server-start.sh config/zookeeper.properties`.
 13. The Zookeeper server is now running. 
 
-### Kafka Server
+### 3.2. Kafka Server
 
 1. Create a new terminal window, ensure the working directory contains the .pem file.
 2. [SSH client connect to the EC2 instance.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html#connect-linux-inst-sshClient).
@@ -44,18 +44,18 @@ https://aws.amazon.com/cli/
     * Source - Anywhere-IPv4.
     * `Save rules`.
 
-### Create a Topic
+### 3.3. Create a Topic
 
 1. Create a new terminal window, ensuring the working directory contains the .pem file.
 2. [SSH client connect to the EC2 instance.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html#connect-linux-inst-sshClient)
 3. `cd kafka_2.12-3.3.1/`.
 4. `bin/kafka-topics.sh --create --topic demo_test --bootstrap-server ec2_public_ipv4_address:9092 --replication-factor 1 --partitions 1`.
 
-### Create a Producer
+### 3.4. Create a Producer
 
 1. `bin/kafka-console-producer.sh --topic demo_test --bootstrap-server ec2_public_ipv4_address:9092`.
 
-### Create a Consumer
+### 3.5. Create a Consumer
 
 1. Create a new terminal window, ensuring the working directory contains the .pem file.
 2. [SSH client connect to the EC2 instance.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html#connect-linux-inst-sshClient)
@@ -63,12 +63,31 @@ https://aws.amazon.com/cli/
 4. `bin/kafka-console-consumer.sh --topic demo_test --bootstrap-server ec2_ublic_ipv4_address:9092`.
 5. You can now type within the producer shell and it will be outputted to the consumer shell.
 
-## S3 Setup
+## 4. S3 Setup
 
 1. Login in to AWS and select a region.
 2. [Create an S3 bucket.](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
     * Bucket name: kafka-stock-market-demo
     * AWS Region: _Closest to you_
+
+## 5. Athena Crawler/Glue Setup
+1. Go to AWS Glue.
+2. Go to Crawlers.
+3. Create Crawler.
+    * Name: stock_market_kafka_crawler
+    * Is your data already mapped to Glue tables?: Not yet
+    * Add data source:
+        * Location of S3 data: In this account
+        * S3 path: kafka-stock-market-demo
+4. `Add an S3 data source`.
+5. Select an IAM role.
+6. `Next`.
+7. `Add database`. 
+    * Name: stock-market-kafka-database.
+8. Select the newly created database.
+9. `Next`. 
+10. `Create Crawler`. 
+11. Select the crawler and press `Run`. 
 
 ## Python Setup
 
@@ -77,10 +96,10 @@ https://aws.amazon.com/cli/
 3. pip install kafka-python==2.02
     * pandas
 
-## Usage Instructions
+## 6. Usage Instructions
 1. Setup the data environment as per above.
 
-## To do:
+## 7. To do:
 
 * Add doc-strings / comments.
 * Finalize repository metadeta and settings.
@@ -89,7 +108,7 @@ https://aws.amazon.com/cli/
 * Repository metadata.
 * Update .toml.
 * Removal of personal pronouns and use professional language.
-* Install a local copy of the Kafka server and review the folder and files.
+* Numbered headings
 
 ## Temporary Notes 1:
 
@@ -98,4 +117,5 @@ https://aws.amazon.com/cli/
 * Stock market data simulation start: 37:40
 * S3 Bucket data upload: 45:20
 * Athena, crawler video start: 52:36
-* Current time in video: 43:22
+* IAM role setup: 55:00
+* Current time in video: 
