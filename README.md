@@ -8,12 +8,13 @@ https://python-poetry.org/docs/#installation
 
 https://aws.amazon.com/cli/
 
-## 3. EC2 Setup
+## 3. EC2 Kafka Setup
 
-### 3.1. Zookeeper Server
+### 3.1. Zookeeper Server (16:00)
 
 1. Login in to AWS and select a region.
 2. Launch an EC2 instance.
+    * Name: kafka-stock-market
     * AMI: Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type.
     * Instance Type: t2.micro.
     * Create a key pair (RSA, .pem) (Store the .pem in your local directory).
@@ -25,8 +26,8 @@ https://aws.amazon.com/cli/
 7. `cd kafka_2.12-3.3.1/`.
 8. `sudo nano config/server.properties`.
 9. Remove the `#` from `#advertised.listeners=PLAINTEXT://your.host.name:9092`
-10. Replace `your.host.name` with the public IPv4 address of the ec2 machine `65.2.168.105:9092`. 
-11. `control-x`, `y`.
+10. Replace `your.host.name` with the public IPv4 address of the EC2 machine `65.2.168.105:9092`. 
+11. `control-x`, `y`, `enter`.
 12. `bin/zookeeper-server-start.sh config/zookeeper.properties`.
 13. The Zookeeper server is now running. 
 
@@ -70,11 +71,21 @@ https://aws.amazon.com/cli/
     * Bucket name: kafka-stock-market-demo
     * AWS Region: _Closest to you_
 
-## 5. Athena Crawler/Glue Setup
+## 6. Usage Instructions
+1. Install Python Poetry and AWS CLI as per sections 1 and 2.
+2. Setup the data environment as per section 3.
+3. Create an S3 bucket as person section 4.
+4. Create a new terminal and type the following:
+5. `git clone https://github.com/timiancam/stock_market_data_kafka_ec2_s3.git`.
+6. `cd stock_market_data_kafka_ec2_s3`.
+7. `poetry shell`. 
+8. `poetry install`. 
+
+## 7. Athena Crawler/Glue Setup
 1. Go to AWS Glue.
 2. Go to Crawlers.
 3. Create Crawler.
-    * Name: stock_market_kafka_crawler
+    * Name: stock-market-kafka-crawler
     * Is your data already mapped to Glue tables?: Not yet
     * Add data source:
         * Location of S3 data: In this account
@@ -89,16 +100,6 @@ https://aws.amazon.com/cli/
 10. `Create Crawler`. 
 11. Select the crawler and press `Run`. 
 
-## Python Setup
-
-1. create a kafka producer
-2. create a kafka consumer
-3. pip install kafka-python==2.02
-    * pandas
-
-## 6. Usage Instructions
-1. Setup the data environment as per above.
-
 ## 7. To do:
 
 * Add doc-strings / comments.
@@ -109,6 +110,7 @@ https://aws.amazon.com/cli/
 * Update .toml.
 * Removal of personal pronouns and use professional language.
 * Numbered headings
+* Appropriately format written instructions, code is ```sh```
 
 ## Temporary Notes 1:
 
@@ -118,4 +120,4 @@ https://aws.amazon.com/cli/
 * S3 Bucket data upload: 45:20
 * Athena, crawler video start: 52:36
 * IAM role setup: 55:00
-* Current time in video: 
+* Current time in video: 32:13
