@@ -70,6 +70,17 @@ https://aws.amazon.com/cli/
 2. [Create an S3 bucket.](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
     * Bucket name: kafka-stock-market-demo
     * AWS Region: _Closest to you_
+3. Go to the IAM dashboard and create a new IAM user.
+4. `Add users`.
+    * User name: _your name_-stock-market-data.
+    * AWS credential type: Access key - Programmatic access.
+    * `Attach existing policies directly`: AdminstratorAccess.
+5. Download the .csv for the Access key ID and the Secret access key.
+6. Open a new terminal window.
+7. `aws configure`.
+8. Input your Access key ID and Secret access key. 
+9. Select the default region closest to you.
+10. You can now send data from your local PC to the S3 bucket.
 
 ## 6. Usage Instructions
 1. Install Python Poetry and AWS CLI as per sections 1 and 2.
