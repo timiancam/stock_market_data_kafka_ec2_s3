@@ -1,44 +1,29 @@
 """
-
+Creates a Kafka producer and consumer.
+The producer simulates sending random market data, reading from a .csv file
+The consumer uploads the sent data to a S3 bucket in the .json format
 """
 
 import pandas as pd
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
-import time
 from time import sleep
 from threading import Thread
 from json import dumps, loads
 import json
 from s3fs import S3FileSystem
 
-# put error catching message for the producer and consumer
-# if the connection to the ec2 instance didn't work
-
-# pandas read the .csv
-# create the producer server
-# create the consumer server
-# run the servers for 10 seconds
-# producer flush the data from the kafka server
-# stop the producer and consumer server
-# Thank you for running the script
-
 RUN_TIME = 20 # Unit = seconds
-BOOTSTRAP_SERVERS = ':9092' # EC2 instance public IPv4 address
+BOOTSTRAP_SERVERS = 'EC2_IPv4_public_address:9092' 
 
 def get_csv_data():
     return pd.read_csv('simulated_raw_data.csv')
 
 def create_producer():
-    return KafkaProducer(bootstrap_servers=[BOOTSTRAP_SERVERS],
-                         value_serializer=lambda x: dumps(x).encode('utf-8')
-                        )
+    return KafkaProducer(bootstrap_servers=[BOOTSTRAP_SERVERS], value_serializer=lambda x: dumps(x).encode('utf-8'))
     
 def create_consumer():
-    return KafkaConsumer('demo_test',
-                         bootstrap_servers=[BOOTSTRAP_SERVERS],
-                         value_serializer=lambda x: loads(x.decode('utf-8'))
-                         )
+    return KafkaConsumer('demo_test', bootstrap_servers=[BOOTSTRAP_SERVERS], value_deserializer=lambda x: loads(x.decode('utf-8')))
 
 def send_data(producer, data):
    # Simulates sending random data to the consumer
@@ -49,7 +34,7 @@ def send_data(producer, data):
         sleep(1) # EC2 instance unable to handle data rate
     
 def receive_data(consumer):
-    s3_address = ''
+    s3_address = 's3://s3_url_address/stock_market_{}.json' # Input your S3 address
     s3 = S3FileSystem()
     
     for count, i in enumerate(consumer):
@@ -73,6 +58,6 @@ def main():
     
     sleep(RUN_TIME)
     
-    print('Misdata managed!')
+    print('Your data has been uploaded to the S3 bucket!')
         
 main()
