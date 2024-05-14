@@ -5,14 +5,14 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "python_package_template"
 authors = ["Timothy Cameron <timiancam@gmail.com>"]
-version = "0.1"
-description = "My package description"
+version = "1.0"
+description = "Produces a Kafka Consumer and Producer where simulated market data is uploaded to an S3 bucket."
 readme = "README.md"
-keywords = ["one", "two"]
+keywords = ["Kafka", "Producer", "EC2", "S3", "Apache", "AWS", "Python", "Pandas", "Daemon Thread"]
 license = "MIT"
-repository = "https:://github.com/timiancam/python_package_template"
+repository = "https://github.com/timiancam/stock_market_data_kafka_ec2_s3"
 packages = [
-    { include = "python_package_template" },
+    { include = "stock_market_data_kafka_ec2_s3" },
 ]
 
 [tool.poetry.dependencies]
